@@ -1,15 +1,9 @@
-# Airflow DAG — Data Pipeline Orchestration
+# Airflow Demo with Docker + CI/CD
 
-Apache Airflow DAG orchestrating end-to-end data pipeline.
+This project demonstrates a production-ready Apache Airflow data orchestration setup, fully containerized with Docker and automated with GitHub Actions CI/CD.
 
-## Pipeline Order
-Ingestion → Data Quality Check → PySpark ETL
+## Quick Start
 
-## DAG Config
-- Schedule: Daily (@daily)
-- Retries: 3 times per task
-- Retry delay: 5 minutes
-
-## Why Airflow?
-Automates task execution, handles retries, and ensures each step
-only runs after the previous one succeeds.
+```bash
+make build
+make up
