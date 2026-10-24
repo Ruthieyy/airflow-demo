@@ -1,0 +1,8 @@
+.venv/
+.airflow/
+logs/
+__pycache__/
+.pytest_cache/
+*.pyc
+data/staging/
+data/curated/

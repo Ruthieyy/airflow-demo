@@ -1,0 +1,5 @@
+order_id,customer_id,amount,order_date,status
+1001,C001,29.99,2026-01-01,shipped
+1001,C002,15.00,2026-01-02,pending
+1003,,-5,2026-13-01,unknown
+,C004,abc,not-a-date,SHIPPED

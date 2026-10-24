@@ -1,0 +1,9 @@
+# Direct dependencies are pinned. The constraint file pins the transitive
+# set tested with Apache Airflow 3.3.2 on Python 3.12.
+--constraint https://raw.githubusercontent.com/apache/airflow/constraints-3.3.2/constraints-3.12.txt
+
+apache-airflow==3.3.2
+apache-airflow-providers-standard==1.19.0
+pandas==3.0.5
+pyarrow==25.0.1
+pytest==9.1.1
