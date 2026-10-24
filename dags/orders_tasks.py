@@ -1,8 +1,7 @@
-"""Local orders tasks for the data_pipeline DAG.
+"""Local orders tasks: stage a sample CSV, check rows, write curated files.
 
-Reads a sample CSV, checks a few row and schema rules, and writes curated
-CSV and Parquet files. Paths default to the repository ``data/`` directory.
-Set ``DATA_PIPELINE_HOME`` to point the same layout at another root.
+Paths default to the repository ``data/`` directory. Set ``DATA_PIPELINE_HOME``
+to point the same layout at another root.
 """
 
 from __future__ import annotations
@@ -21,7 +20,7 @@ ALLOWED_STATUS = frozenset({"shipped", "pending", "cancelled", "returned"})
 
 
 class DataQualityError(ValueError):
-    """A dataset failed a check. The Airflow task should fail."""
+    """A dataset failed a check. The calling task should fail."""
 
 
 def repo_root() -> Path:

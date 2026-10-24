@@ -56,29 +56,41 @@ pytest
 
 ## Run locally
 
-`airflow standalone` is the local run path. It uses SQLite and starts the API server, scheduler, and dag processor in one process. The UI is at <http://localhost:8080>.
+`airflow standalone` is the local run path. It uses SQLite and starts the API server, scheduler, dag processor, and triggerer. The UI is at <http://localhost:8080>.
 
-From the repository root, with the virtualenv activated:
+Activate the virtualenv first. Standalone starts child processes by the command name `airflow`, so that executable has to be on `PATH`. Calling `.venv/bin/airflow standalone` without activating the environment fails those children with `FileNotFoundError`.
+
+From the repository root:
 
 ```bash
+source .venv/bin/activate
 export AIRFLOW_HOME="$PWD/.airflow"
 export AIRFLOW__CORE__LOAD_EXAMPLES=false
 export AIRFLOW__CORE__DAGS_FOLDER="$PWD/dags"
 
 airflow db migrate
+airflow dags reserialize
 airflow dags list
 airflow dags test data_pipeline 2026-10-01
 ```
 
-`airflow dags test` runs one DAG date without the scheduler loop. After it succeeds, `data/curated/orders.parquet` and `data/curated/orders.csv` are present. Staging and curated outputs are gitignored.
+`dags list` is empty until something has parsed the folder. `dags reserialize` does that parse and writes the DAG to the metadata database. `dags test` runs one logical date without the scheduler loop, including while the DAG is paused. After it succeeds, `data/curated/orders.parquet` and `data/curated/orders.csv` are present. Staging and curated outputs are gitignored.
 
-To leave the UI running:
+Leave the UI running with:
 
 ```bash
 airflow standalone
 ```
 
-Airflow 3 writes the generated admin password to `$AIRFLOW_HOME/simple_auth_manager_passwords.json.generated`. Stop the process with Ctrl-C. `.airflow/` is gitignored.
+Log in as `admin`. Airflow writes the generated password to `$AIRFLOW_HOME/simple_auth_manager_passwords.json.generated` and prints it the first time that file is created. New DAGs are paused. Unpause before expecting the daily schedule to create a run:
+
+```bash
+airflow dags unpause data_pipeline
+```
+
+Stop standalone with Ctrl-C. `.airflow/` is gitignored.
+
+`dags` commands log a graphviz import warning. This pipeline does not render a graph; the tasks still run. Standalone also logs a SimpleAuthManager warning because the API listens on `0.0.0.0`. That warning is expected for this local process.
 
 ## Limitations / Next steps
 
